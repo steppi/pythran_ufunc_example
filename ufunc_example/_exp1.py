@@ -1,11 +1,12 @@
 import numpy as np
 
-# pythran export exp1(float64[])
-def exp1(x):
+
+# pythran export capsule _exp1(float64)
+def _exp1(x):
     EPS = np.finfo('float').eps
-    GA=0.5772156649015328
+    GA = 0.5772156649015328
     if x == 0.0:
-        return np.inf
+        return float("inf")
     if x <= 1:
         result = 1.
         term = 1.
@@ -15,7 +16,7 @@ def exp1(x):
             if abs(term) <= abs(result) * EPS:
                 break
         return -GA - np.log(x) + x * result
-    M = 20 + np.trunc(80 / x)
+    M = int(20 + np.trunc(80 / x))
     t0 = 0.0
     for k in range(M, 0, -1):
         t0 = k / (1 + k/(x + t0))
